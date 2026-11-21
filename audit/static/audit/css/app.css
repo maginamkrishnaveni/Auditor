@@ -1,0 +1,19 @@
+:root { --tap: 1.2rem; }
+body { -webkit-text-size-adjust: 100%; }
+
+.stat-card { border: none; border-radius: 1rem; }
+.stat-value { font-size: 2rem; font-weight: 800; line-height: 1.1; }
+.stat-label { font-size: .8rem; }
+
+/* Large, thumb-friendly form controls and buttons on phones */
+.form-select-lg, .form-control-lg { font-size: 1.15rem; padding: .7rem 1rem; }
+.btn-tap { padding: .95rem 1rem; font-size: 1.2rem; border-radius: .75rem; }
+
+@media (max-width: 576px) {
+  .stat-value { font-size: 1.55rem; }
+  .btn-tap { font-size: 1.1rem; }
+}
+
+/* Keep the live dashboard numbers visible without scrolling on phones */
+.list-group-item { padding: .65rem .9rem; }
+.navbar-brand { font-size: 1.1rem; }

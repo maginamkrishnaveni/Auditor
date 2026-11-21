@@ -1,0 +1,59 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>{% block title %}Voice Auditor{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'audit/vendor/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'audit/css/app.css' %}">
+</head>
+<body class="bg-light">
+<nav class="navbar navbar-dark bg-success shadow-sm sticky-top">
+  <div class="container-fluid">
+    <span class="navbar-brand mb-0 h1">📚 Voice Auditor</span>
+    <div class="d-flex align-items-center text-white">
+      {% if volunteer %}
+        <span class="me-2 small d-none d-sm-inline">Volunteer: <strong>{{ volunteer.name }}</strong></span>
+        <a href="{% url 'volunteer_change' %}" class="btn btn-sm btn-outline-light">Change</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<main class="container py-3 py-md-4" style="max-width: 760px;">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show shadow-sm" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+<script src="{% static 'audit/vendor/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'audit/vendor/htmx.min.js' %}"></script>
+<script>
+// Auto-fill amount = price × quantity when a language is chosen.
+function updateAmount() {
+  var langSel = document.getElementById('id_language');
+  var qtyInput = document.getElementById('id_quantity');
+  var amtInput = document.getElementById('id_amount_paid');
+  if (!langSel || !amtInput) return;
+  var opt = langSel.options[langSel.selectedIndex];
+  if (!opt) return;
+  var price = opt.getAttribute('data-price');
+  if (price === '' || price === null) return; // price pending -> leave manual
+  var qty = parseInt((qtyInput && qtyInput.value) || 1, 10) || 1;
+  amtInput.value = (parseFloat(price) * qty).toFixed(2);
+}
+// Delegated listener keeps working after HTMX swaps the language dropdown.
+document.addEventListener('change', function (e) {
+  if (e.target && e.target.id === 'id_language') updateAmount();
+});
+</script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

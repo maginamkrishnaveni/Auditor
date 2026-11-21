@@ -1,0 +1,35 @@
+{% extends 'audit/base.html' %}
+{% block title %}Voice Auditor — Home{% endblock %}
+{% block content %}
+<h2 class="h4 mb-3">Distribution Sessions</h2>
+
+{% if active_sessions %}
+  <div class="list-group mb-4">
+    {% for s in active_sessions %}
+      <a href="{% url 'dashboard' s.id %}" class="list-group-item list-group-item-action list-group-item-success">
+        <div class="d-flex justify-content-between align-items-center">
+          <strong>{{ s.name }}</strong>
+          <span class="badge bg-success rounded-pill">Active</span>
+        </div>
+        <small class="text-muted">{{ s.date }}{% if s.location %} · {{ s.location }}{% endif %}</small>
+      </a>
+    {% endfor %}
+  </div>
+{% else %}
+  <p class="text-muted">No active sessions. Start one below.</p>
+{% endif %}
+
+<a href="{% url 'session_create' %}" class="btn btn-success btn-tap w-100 mb-4">＋ New Session</a>
+
+{% if recent_sessions %}
+  <h6 class="text-muted text-uppercase mb-2">Recent sessions</h6>
+  <div class="list-group">
+    {% for s in recent_sessions %}
+      <a href="{% url 'report' s.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+        <span>{{ s.name }} <small class="text-muted d-block">{{ s.date }}</small></span>
+        {% if s.is_active %}<span class="badge bg-success rounded-pill">Active</span>{% else %}<span class="badge bg-secondary rounded-pill">Closed</span>{% endif %}
+      </a>
+    {% endfor %}
+  </div>
+{% endif %}
+{% endblock %}

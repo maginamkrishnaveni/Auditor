@@ -1,0 +1,17 @@
+{% extends 'audit/base.html' %}
+{% block title %}Select Volunteer{% endblock %}
+{% block content %}
+<h3 class="h4 mb-3">Who are you?</h3>
+<form method="post">
+  {% csrf_token %}
+  <div class="mb-3">
+    <label class="form-label fs-5">Existing volunteer</label>
+    {{ form.volunteer }}
+  </div>
+  <div class="mb-4">
+    <label class="form-label fs-5">…or new volunteer name</label>
+    {{ form.new_name }}
+  </div>
+  <button class="btn btn-success btn-tap w-100" type="submit">Continue</button>
+</form>
+{% endblock %}

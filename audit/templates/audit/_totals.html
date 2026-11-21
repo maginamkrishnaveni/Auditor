@@ -1,0 +1,27 @@
+<div class="row g-2 mb-3">
+  <div class="col-6 col-md-4">
+    <div class="card stat-card text-center shadow-sm h-100">
+      <div class="card-body py-3">
+        <div class="stat-label text-muted">Books Given</div>
+        <div class="stat-value text-success">{{ session.total_books }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6 col-md-4">
+    <div class="card stat-card text-center shadow-sm h-100">
+      <div class="card-body py-3">
+        <div class="stat-label text-muted">Collected</div>
+        <div class="stat-value text-primary">₹{{ session.total_collected|floatformat:0 }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 col-md-4">
+    <div class="card stat-card text-center shadow-sm h-100 border border-warning border-2">
+      <div class="card-body py-3">
+        <div class="stat-label text-muted">Temple Amount Due</div>
+        <div class="stat-value text-warning">₹{{ session.temple_amount|floatformat:0 }}</div>
+        <small class="text-muted">submit all collected</small>
+      </div>
+    </div>
+  </div>
+</div>

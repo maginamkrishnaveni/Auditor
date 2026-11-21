@@ -1,0 +1,51 @@
+{% extends 'audit/base.html' %}
+{% block title %}{{ session.name }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-start mb-2">
+  <div>
+    <h3 class="h5 mb-0">{{ session.name }}</h3>
+    <small class="text-muted">{{ session.date }}{% if session.location %} · {{ session.location }}{% endif %}</small>
+  </div>
+  <a href="{% url 'home' %}" class="btn btn-sm btn-outline-secondary">Home</a>
+</div>
+
+{# Live totals — auto-refresh every 3s #}
+<div id="live-totals"
+     hx-get="{% url 'totals_fragment' session.id %}"
+     hx-trigger="every 3s"
+     hx-swap="innerHTML">
+  {% include 'audit/_totals.html' %}
+</div>
+
+<div class="row g-2 mb-3">
+  <div class="col-6">
+    <a href="{% url 'add_book' session.id %}" class="btn btn-success btn-tap w-100">📖 Add Book</a>
+  </div>
+  <div class="col-6">
+    <a href="{% url 'add_donation' session.id %}" class="btn btn-primary btn-tap w-100">🤝 Donation</a>
+  </div>
+</div>
+
+<div class="d-flex flex-wrap gap-2 mb-3">
+  <a href="{% url 'report' session.id %}" class="btn btn-outline-secondary">Report</a>
+  <a href="{% url 'export_excel' session.id %}" class="btn btn-outline-secondary">Export Excel</a>
+  {% if session.is_active %}
+    <form method="post" action="{% url 'end_session' session.id %}" class="ms-auto"
+          onsubmit="return confirm('End this session and finalize? You can still view its report later.');">
+      {% csrf_token %}
+      <button class="btn btn-outline-danger" type="submit">End Session</button>
+    </form>
+  {% else %}
+    <span class="badge bg-secondary rounded-pill align-self-center ms-auto">Session Closed</span>
+  {% endif %}
+</div>
+
+<h6 class="text-muted text-uppercase mt-3 mb-2">Recent transactions</h6>
+{# Live recent list — auto-refresh every 3s #}
+<div id="live-recent"
+     hx-get="{% url 'recent_fragment' session.id %}"
+     hx-trigger="every 3s"
+     hx-swap="innerHTML">
+  {% include 'audit/_recent.html' %}
+</div>
+{% endblock %}
